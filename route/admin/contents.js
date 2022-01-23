@@ -31,11 +31,19 @@ router.post("/posts/data", [auth], async (req, res) => {
     const puppeteer = require("puppeteer");
     // let directory = __dirname + "\\screenshots\\screenshot.png";
 
-    let allPosts = await Model.find({ screenshot: { $exists: false } }).limit(
-      20
-    );
+    let allPosts = await Model.find({
+      screenshot_error: { $exists: false },
+      screenshot: { $exists: false },
+      // categories: { $in: ["exclusive", "updated_daily", ] },
+      categories: { $in: ["updated_daily"] },
+    }).limit(10);
 
-    let posts = await Model.find({ screenshot: { $exists: false } });
+    let posts = await Model.find({
+      screenshot: { $exists: false },
+      screenshot_error: { $exists: false },
+      // categories: { $in: ["exclusive", "updated_daily"] },
+      categories: { $in: ["updated_daily"] },
+    });
     console.log(posts.length, "testing length");
     // allPosts = [allPosts[1], allPosts[1]];
     let length = allPosts.length;
@@ -86,7 +94,14 @@ router.post("/posts/data", [auth], async (req, res) => {
             return;
           }
         } catch (err) {
-          console.log(index, "% crashed ");
+          if (!err.message.includes("timeout of")) {
+            let found = await Model.findById(item._id);
+
+            found.screenshot_error = err.message;
+            await found.save();
+            console.log(found.screenshot_error);
+          }
+          console.log(err.message);
         }
       })();
     });
