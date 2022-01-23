@@ -26,7 +26,14 @@ async function run(pid) {
 
   app.use(express.json({ extended: false }));
 
-  var allowlist = [HTTP_WEB, HTTPS_WEB, HTTP_ADMIN, HTTPS_ADMIN];
+  var allowlist = [
+    "https://public-health-news.herokuapp.com/",
+    "https://public-health-news.herokuapp.com",
+    HTTP_WEB,
+    HTTPS_WEB,
+    HTTP_ADMIN,
+    HTTPS_ADMIN,
+  ];
 
   var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
