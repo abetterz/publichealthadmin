@@ -151,6 +151,7 @@ router.get("/:model/read", async (req, res) => {
       must_read: ["must_read"],
       updated_daily: ["updated_daily"],
       featured_story: ["featured_story"],
+      front_page: ["front_page"],
     };
 
     let got_category = dict[category];
@@ -166,6 +167,9 @@ router.get("/:model/read", async (req, res) => {
 
       console.log(type);
       if (!type) {
+        if (category == "front_page") {
+          delete query.screenshot;
+        }
         output = await Model.find(query).limit(8).sort({ created_date: -1 });
       } else {
         output = await Model.find(query).sort({ created_date: -1 });

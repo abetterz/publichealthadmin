@@ -25,7 +25,6 @@ const uploadToGoogle = async ({
   uploadSuccess = (f) => f,
 }) => {
   let file_location = path.join(uploaded_file_path);
-  console.log(file_location);
 
   let bucket = "publichealthnews";
 
