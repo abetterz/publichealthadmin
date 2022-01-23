@@ -16,6 +16,8 @@ const HTTPS_ADMIN = process.env.HTTPS_ADMIN;
 const HTTPS_WEB = process.env.HTTPS_WEB;
 const PORT = process.env.PORT;
 
+require("events").defaultMaxListeners = 100;
+
 async function run(pid) {
   const app = express();
   // parse cookie. require for socket.io

@@ -17,6 +17,7 @@ const TheSchema = new Schema({
   entry_id: String,
   categories: [String],
   screenshot: String,
+  screenshot_error: String,
 
   // universal
   public: {
