@@ -30,68 +30,38 @@ router.post("/posts/data", [auth], async (req, res) => {
 
     const puppeteer = require("puppeteer");
     // let directory = __dirname + "\\screenshots\\screenshot.png";
+    let directory = "screenshots/screenshot.png";
 
-    let allPosts = await Model.find({ screenshot: { $exists: false } }).limit(
-      20
-    );
+    let uploadSuccess = (err, file, apiResponse) => {
+      // delete the temporary file after word
+      fs.unlink(path.join(directory), (err) => {
+        if (err) throw err;
+      });
+      console.log(err, file, apiResponse, "testin merchant file upload");
+    };
 
-    let posts = await Model.find({ screenshot: { $exists: false } });
-    console.log(posts.length, "testing length");
-    // allPosts = [allPosts[1], allPosts[1]];
-    let length = allPosts.length;
-    let percentage = 0;
-    let allscreenshot = allPosts.map(async (item, index) => {
+    (async () => {
+      const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        defaultViewport: { width: 1920, height: 1480 },
+      });
+
+      let item = data[7];
       let title = sanitizer.sanitize(item.title);
-      let directory = `screenshots/${title}.png`;
 
-      percentage = ((index + 1) / length) * 100;
-      console.log(percentage, "%");
-      let uploadSuccess = async (err, file, apiResponse) => {
-        // delete the temporary file after word
-        fs.unlink(path.join(directory), (err) => {
-          if (err) throw err;
-        });
-        let found = await Model.findById(item._id);
-        if (found) {
-          found.screenshot = apiResponse.mediaLink;
-          await found.save();
-        }
-        return;
-      };
+      const page = await browser.newPage();
+      await page.goto();
 
-      (async () => {
-        try {
-          if (item.link && item.title) {
-            const browser = await puppeteer.launch({
-              args: ["--no-sandbox", "--disable-setuid-sandbox"],
-              defaultViewport: { width: 1920, height: 1480 },
-            });
+      await page.screenshot({ path: "screenshots/screenshot.png" });
 
-            const page = await browser.newPage();
-            await page.goto(item.link);
-
-            await page.screenshot({ path: directory });
-
-            await browser.close();
-
-            await uploadToGoogle({
-              changed_name: title,
-              filetype: "screenshot",
-              uploaded_file_path: `screenshots/${title}.png`,
-              uploadSuccess,
-            });
-
-            return;
-          } else {
-            return;
-          }
-        } catch (err) {
-          console.log(index, "% crashed ");
-        }
-      })();
-    });
-
-    await Promise.all(allscreenshot);
+      await browser.close();
+      let uploaded = await uploadToGoogle({
+        changed_name: title,
+        filetype: "screenshot",
+        uploaded_file_path: "screenshots/screenshot.png",
+        uploadSuccess,
+      });
+    })();
 
     res.status(201).json(output);
   } catch (error) {
@@ -161,7 +131,6 @@ router.get("/:model/read", async (req, res) => {
     if (got_category) {
       let query = {
         categories: { $in: got_category },
-        screenshot: { $exists: true },
       };
 
       console.log(type);
@@ -171,9 +140,7 @@ router.get("/:model/read", async (req, res) => {
         output = await Model.find(query).sort({ created_date: -1 });
       }
     } else {
-      output = await Model.find({ screenshot: { $exists: true } }).sort({
-        created_date: -1,
-      });
+      output = await Model.find({}).sort({ created_date: -1 });
     }
 
     res.status(201).json(output);

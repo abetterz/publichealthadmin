@@ -16,6 +16,7 @@ const TheSchema = new Schema({
   date_published: String,
   entry_id: String,
   categories: [String],
+  screenshot: String,
 
   // universal
   public: {

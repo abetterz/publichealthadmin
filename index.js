@@ -1,7 +1,12 @@
 const cluster = require("cluster");
 const server = require("./server");
 
-const WORKERS = process.env.WEB_CONCURRENCY || 1;
+
+const {cpus} = require('os')
+const process = require('process')
+
+const numCPUs = cpus().length;
+const WORKERS = process.env.WEB_CONCURRENCY || numCPUs;
 
 if (cluster.isMaster) {
   for (var i = 0; i < WORKERS; i++) {

@@ -59,39 +59,6 @@ router.post("/branding/:file_bucket", [auth], async (req, res) => {
         res.status(206).send({ file_id: temp_file._id });
       } catch (error) {}
     };
-
-    let options = {
-      resumable: true,
-      validation: "crc32c",
-      metadata: {
-        metadata: {},
-      },
-    };
-
-    const gc = new Storage({
-      credentials,
-      projectId: "platinum-device-329513",
-    });
-
-    if (changed_name) {
-      options.destination = changed_name;
-    }
-    if (metedata_event) {
-      options.metadata.event = metedata_event;
-    }
-    if (gzip) {
-      options.metadata.gzip = gzip;
-    }
-
-    let location = file_location;
-
-    let merchant_file_upload = gc.bucket("promo-testing-bucket");
-
-    let uploaded = await merchant_file_upload.upload(
-      config.file_location,
-      options,
-      uploadCallback
-    );
   } catch (err) {
     let output = {
       key: "upload",
