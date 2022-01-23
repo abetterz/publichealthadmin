@@ -62,11 +62,11 @@ router.post("/:model/create", [auth], async (req, res) => {
   }
 });
 
-router.get("/:model/read", [auth], async (req, res) => {
+router.get("/:model/read", async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
-    const { category } = req.query;
+    const { category, type } = req.query;
 
     let Model = getModel({ model });
 
@@ -88,13 +88,21 @@ router.get("/:model/read", [auth], async (req, res) => {
 
     console.log(category);
 
-    let query = {};
+    let output = [];
     if (got_category) {
-      query = {
+      let query = {
         categories: { $in: got_category },
       };
+
+      console.log(type);
+      if (!type) {
+        output = await Model.find(query).limit(8).sort({ created_date: -1 });
+      } else {
+        output = await Model.find(query).sort({ created_date: -1 });
+      }
+    } else {
+      output = await Model.find({}).sort({ created_date: -1 });
     }
-    let output = await Model.find(query).limit(8).sort({ created_date: -1 });
 
     res.status(201).json(output);
   } catch (error) {
