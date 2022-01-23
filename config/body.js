@@ -1,0 +1,166 @@
+const dict = {
+  login: ["email", "password"],
+  public_manager: [
+    "place",
+    "positions",
+    "owned",
+    "place_confirmed",
+    "user_confirmed",
+    "access_type",
+  ],
+  user: ["name", "email", "phone", "user_id", "address"],
+  // user authentication
+  register: ["email", "fullname", "password", "confirm_password", "category"],
+
+  verification: ["email", "phone", "password", "medium", "confirmation_code"],
+  forgot_password: ["phone", "email", "medium"],
+  resent_verification: ["phone", "email", "medium"],
+  resent_code: ["phone", "email", "type"],
+  recovery_check: ["phone", "email", "recovery_token"],
+  password_reset: ["confirm_password", "password"],
+  create_profile: [
+    "name",
+    "relationship",
+    "email",
+    "dob",
+    "phone",
+    "text_message",
+    "bio",
+    "self",
+    "address",
+  ],
+  account_update: [
+    "_id",
+    "name",
+    "phone",
+    "email",
+    "address",
+    "current_password",
+    "new_password",
+  ],
+  update_profile: ["name", "phone", "email", "address"],
+  update_user: ["phone", "email"],
+  current_profile: [
+    "name",
+    "email",
+    "current",
+    "dob",
+    "phone",
+    "self",
+    "address",
+  ],
+  reset_password: ["email", "token"],
+
+  // address
+  google_place: [
+    "business_status",
+    "formatted_address",
+    "icon",
+    "international_phone_number",
+    "name",
+    "types",
+    "website",
+  ],
+
+  public_place: [
+    "_id",
+    "formatted_address",
+    "icon",
+    "international_phone_number",
+    "name",
+    "types",
+    "website",
+  ],
+
+  // onboard
+  my_business: ["my_business"],
+  place_card: [
+    "poster",
+    "banner",
+    "logo",
+    "business_status",
+    "formatted_address",
+    "icon",
+    "international_phone_number",
+    "name",
+    "types",
+    "website",
+    "place_id",
+    "corrected",
+    "_id",
+  ],
+
+  updated_place: [
+    "formatted_address",
+    "icon",
+    "international_phone_number",
+    "name",
+    "types",
+    "website",
+  ],
+  business_branding: ["logo", "banner", "poster"],
+  business_hours: [
+    "days",
+    "time_start",
+    "time_end",
+    "date_start",
+    "date_end",
+    "notes",
+    "published",
+    "public",
+  ],
+  public_business_hours: [
+    "days",
+    "time_start",
+    "time_end",
+    "date_start",
+    "date_end",
+    "notes",
+    "published",
+    "public",
+    "_id",
+  ],
+
+  // benefits
+  packages: [
+    "title",
+    "price",
+    "payments",
+    "full_payment_discount",
+    "type",
+    "invite_only",
+    "total",
+    "representatives",
+    "description",
+    "image",
+    "social_media_postings",
+    "m2m_emails",
+    "member_newsletter",
+    "product_listing",
+    "listing_categories",
+    "complimentary_events",
+    "job_postings",
+    "business_reviews",
+    "press_releases",
+    "total_representations",
+    "logo_at_event",
+
+    "direct_messages",
+    "dedicated_manager",
+    "company_profile",
+    "sponsorship",
+    "advertisement",
+    "speaker",
+    "hall_of_fame",
+    "town_halls",
+    "customized",
+  ],
+};
+function getDict(entry, callback) {
+  let output = dict[entry];
+  if (callback) {
+    return callback(output);
+  }
+  return output;
+}
+exports.getDict = getDict;

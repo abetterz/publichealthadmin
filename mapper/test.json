@@ -1,0 +1,287 @@
+{
+  "address_components": [
+    { "long_name": "111", "short_name": "111", "types": ["street_number"] },
+    {
+      "long_name": "Lake Hollingsworth Drive",
+      "short_name": "Lake Hollingsworth Dr",
+      "types": ["route"]
+    },
+    {
+      "long_name": "Florida Southern College Area",
+      "short_name": "Florida Southern College Area",
+      "types": ["neighborhood", "political"]
+    },
+    {
+      "long_name": "Lakeland",
+      "short_name": "Lakeland",
+      "types": ["locality", "political"]
+    },
+    {
+      "long_name": "Polk County",
+      "short_name": "Polk County",
+      "types": ["administrative_area_level_2", "political"]
+    },
+    {
+      "long_name": "Florida",
+      "short_name": "FL",
+      "types": ["administrative_area_level_1", "political"]
+    },
+    {
+      "long_name": "United States",
+      "short_name": "US",
+      "types": ["country", "political"]
+    },
+    { "long_name": "33801", "short_name": "33801", "types": ["postal_code"] }
+  ],
+  "adr_address": "<span class=\"street-address\">111 Lake Hollingsworth Dr</span>, <span class=\"locality\">Lakeland</span>, <span class=\"region\">FL</span> <span class=\"postal-code\">33801</span>, <span class=\"country-name\">USA</span>",
+  "business_status": "OPERATIONAL",
+  "formatted_address": "111 Lake Hollingsworth Dr, Lakeland, FL 33801, USA",
+  "formatted_phone_number": "(863) 680-4111",
+  "geometry": {
+    "location": { "lat": 28.0314545, "lng": -81.9450401 },
+    "viewport": {
+      "south": 28.0262431,
+      "west": -81.95369674999998,
+      "north": 28.0353627,
+      "east": -81.93837855000001
+    }
+  },
+  "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/school-71.png",
+  "icon_background_color": "#7B9EB0",
+  "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/school_pinlet",
+  "international_phone_number": "+1 863-680-4111",
+  "name": "Florida Southern College",
+  "opening_hours": {
+    "open_now": true,
+    "periods": [
+      {
+        "close": {
+          "day": 1,
+          "time": "1700",
+          "hours": 17,
+          "minutes": 0,
+          "nextDate": 1636405200000
+        },
+        "open": {
+          "day": 1,
+          "time": "0800",
+          "hours": 8,
+          "minutes": 0,
+          "nextDate": 1636372800000
+        }
+      },
+      {
+        "close": {
+          "day": 2,
+          "time": "1700",
+          "hours": 17,
+          "minutes": 0,
+          "nextDate": 1636491600000
+        },
+        "open": {
+          "day": 2,
+          "time": "0800",
+          "hours": 8,
+          "minutes": 0,
+          "nextDate": 1636459200000
+        }
+      },
+      {
+        "close": {
+          "day": 3,
+          "time": "1700",
+          "hours": 17,
+          "minutes": 0,
+          "nextDate": 1636578000000
+        },
+        "open": {
+          "day": 3,
+          "time": "0800",
+          "hours": 8,
+          "minutes": 0,
+          "nextDate": 1636545600000
+        }
+      },
+      {
+        "close": {
+          "day": 4,
+          "time": "1700",
+          "hours": 17,
+          "minutes": 0,
+          "nextDate": 1636059600000
+        },
+        "open": {
+          "day": 4,
+          "time": "0800",
+          "hours": 8,
+          "minutes": 0,
+          "nextDate": 1636632000000
+        }
+      },
+      {
+        "close": {
+          "day": 5,
+          "time": "1700",
+          "hours": 17,
+          "minutes": 0,
+          "nextDate": 1636146000000
+        },
+        "open": {
+          "day": 5,
+          "time": "0800",
+          "hours": 8,
+          "minutes": 0,
+          "nextDate": 1636113600000
+        }
+      }
+    ],
+    "weekday_text": [
+      "Monday: 8:00 AM – 5:00 PM",
+      "Tuesday: 8:00 AM – 5:00 PM",
+      "Wednesday: 8:00 AM – 5:00 PM",
+      "Thursday: 8:00 AM – 5:00 PM",
+      "Friday: 8:00 AM – 5:00 PM",
+      "Saturday: Closed",
+      "Sunday: Closed"
+    ]
+  },
+  "photos": [
+    {
+      "height": 1363,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/102958420540242884167\">Florida Southern College</a>"
+      ],
+      "width": 2048
+    },
+    {
+      "height": 3024,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/112941838609034429322\">Dawn Chapman</a>"
+      ],
+      "width": 4032
+    },
+    {
+      "height": 3118,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/106627246928506655789\">Brian Hope</a>"
+      ],
+      "width": 2358
+    },
+    {
+      "height": 4032,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/110326423936836696304\">Jonathan Tennis</a>"
+      ],
+      "width": 3024
+    },
+    {
+      "height": 3024,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/111115972159257964632\">Tim Kojevnikov</a>"
+      ],
+      "width": 4032
+    },
+    {
+      "height": 2988,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/107431981849542587174\">Justin Penn</a>"
+      ],
+      "width": 5312
+    },
+    {
+      "height": 3928,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/101476502781232909095\">Adam F</a>"
+      ],
+      "width": 4578
+    },
+    {
+      "height": 4000,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/106303164996602864783\">Steve Blary</a>"
+      ],
+      "width": 6000
+    },
+    {
+      "height": 2268,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/105391329589868801724\">J D</a>"
+      ],
+      "width": 4032
+    },
+    {
+      "height": 3120,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/114636465050728740357\">Vicki Lucas</a>"
+      ],
+      "width": 4160
+    }
+  ],
+  "place_id": "ChIJ20_eqTE_3YgRpNMWrFIwrPQ",
+  "plus_code": {
+    "compound_code": "23J3+HX Lakeland, FL, USA",
+    "global_code": "76WW23J3+HX"
+  },
+  "rating": 4.3,
+  "reference": "ChIJ20_eqTE_3YgRpNMWrFIwrPQ",
+  "reviews": [
+    {
+      "author_name": "Alexis Williams",
+      "author_url": "https://www.google.com/maps/contrib/110000264715185769550/reviews",
+      "language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiYNbUOM5xSk3_HgFkCQFX1bCJj-L7WQTeA0mluqA=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 5,
+      "relative_time_description": "3 weeks ago",
+      "text": "I am a first year student here and I love it. But I will say, please don’t choose what school you go to based on Google reviews. If you are trying to plan a trip though, highly recommended visiting!!",
+      "time": 1633878593
+    },
+    {
+      "author_name": "Michael Gilmore",
+      "author_url": "https://www.google.com/maps/contrib/101680077692955413049/reviews",
+      "language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a/AATXAJxBZkLHsKf4Apqah8lFfysDCggAhOJ270NG794ygQ=s128-c0x00000000-cc-rp-mo-ba4",
+      "rating": 5,
+      "relative_time_description": "4 months ago",
+      "text": "A beautiful campus, with several buildings designed by Frank Lloyd Wright. You can take a self-guided walking tour, or a more formal docent-guided tour. Either way, you can't go wrong. Very peaceful and calming.",
+      "time": 1624407586
+    },
+    {
+      "author_name": "Brittany Leeper",
+      "author_url": "https://www.google.com/maps/contrib/103284488635609412719/reviews",
+      "language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GgkZtyvGDbsQ8RGoRHYCUin6dTfMPU0azbsSEdq=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 1,
+      "relative_time_description": "a month ago",
+      "text": "The campus overall is beautiful (the building super old and indoor seating outdated). The instructors are quite good and the education received is decent. My concern isn’t so much with the appearance or instructors personally, it is with the covid policies FSC as a whole has implemented and how the classroom instruction is handled. Several of my courses we are forced into groups of 4 and mainly doing group work while the delta variant still continues to rapidly spread. My husband is immune compromised but I still have to participate in these groups while the instructors are able to stand behind the plexiglass they are provided to keep them safe. Furthermore there is little social distancing in classes as students are side by side at the same tables. The FSC cares plan also allows for students who are vaccinated but asymptotic to be in school and not quarantine even if testing positive. How is this right?? I’m disappointed with how the school is handling the safety of students as well as the loved ones that students are going home to (especially when commuting).",
+      "time": 1630940541
+    },
+    {
+      "author_name": "Heather McCumber",
+      "author_url": "https://www.google.com/maps/contrib/109626330343862737793/reviews",
+      "language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiuFYRL50_wvzc-CR058grrvlWOUQlqFIJlhceJsQ=s128-c0x00000000-cc-rp-mo-ba4",
+      "rating": 5,
+      "relative_time_description": "2 weeks ago",
+      "text": "Friendly staff and students. Very knowledgeable and willing to help",
+      "time": 1634419520
+    },
+    {
+      "author_name": "Eli Beraza",
+      "author_url": "https://www.google.com/maps/contrib/109442398101294132565/reviews",
+      "language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/AOh14GjQHrz0txsS0rG3PfHU_TJiOEhpYrtVgX-THbyP=s128-c0x00000000-cc-rp-mo",
+      "rating": 5,
+      "relative_time_description": "8 months ago",
+      "text": "My wife and myself toured the campus along with my daughter, a prospective student and found the institution lives up to its name as one of the most beautiful in the country,..and the staff, faculty and current students are top notch. This school is very high on her list.",
+      "time": 1613864574
+    }
+  ],
+  "types": ["university", "point_of_interest", "establishment"],
+  "url": "https://maps.google.com/?cid=17630519772881277860",
+  "user_ratings_total": 126,
+  "utc_offset": -240,
+  "vicinity": "111 Lake Hollingsworth Drive, Lakeland",
+  "website": "https://www.flsouthern.edu/",
+  "html_attributions": [],
+  "utc_offset_minutes": -240
+}

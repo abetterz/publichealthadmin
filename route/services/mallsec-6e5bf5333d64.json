@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "mallsec",
+  "private_key_id": "6e5bf5333d64a69db1e94b81756aef6d461e23ab",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDuFPtmF0eY0OmG\nlZ4OWFI3lnJxAMzryp7k+1mP19x4Ub5Kr8dnItUOpf2LUlWLO+i7rPesRtXIORqe\nNZDt/RxfJP4ec8z1ycdfXkW/HwDvZYd0vy/26/7n+9e2bkxAafZgoXwVJLO/OUWG\n/tkfzct9gea278sGsDpZulomEZiWusPeNXK5L+Dvr+i19Sr4+r9GRiHBiX57Zm9i\n3TGCg8h5EjwBPTYtfceqGGt2n8h3qm5a34+mra1yjLpdL0U3v1sy41kFJjqMF1v5\nPldGCFuRP6KiHOV5h31JcHVVpksNweBToAksZIdXTT/FhGwwoT5e3GnV+ucwMMr8\nHr2WtrSlAgMBAAECggEAL6royMB5d8nAL8+N9T5Ou811/VUVMlJ/rMX8YRXtkPOA\n35BBIs+xC71FPdtOwFFO4CCZ+Ba4n917DFkaOuQWBaCw9mTmEQIE1n3YBhONiuDv\nlXrf/hazEzxzrJV5093DVAaRAuS1zmAHoScuTrVT/D2BdXgeVKj9DdEHUp7sR6Ub\nQipafQkRecLJDtao93yh6Lb0i72l+hg9k7pDl52gg40fSPiCTdEz8HElTkMvD/dH\nAf9LoyCDyxgSMqgyMccV2c7NFg6lKDKauG6XhDTbRVdqmppnvPNfFbhoLfZQ6IXY\nafrzDFZXXfIodpBaZMscr7bwn6FQxuDhkdTgf0vl0wKBgQD+UxSEqUOUpXBRuyDs\nK3MgqNlFjg70ZZyZ6RIiYo1pTpA21Yox+sUTncTiLQODr4OEpu8MQE/CL9Mj3QoA\nrMglueGkS32oH5+1lMgfIEP3pPuSTn0sQiqYHNScS0YxwyQjo89S4xEf/SqONnVC\nBqWR1x3QYOMEnZlZwL76yNuVCwKBgQDvpoI5HoPwYcW27MmTwZF24skqnhjKTCOR\nDg/xSWWz7HGsjfwYafG+1ZbmPBwXdQ/rwX42JtRnkPZqDWtXNuHLT7D8TOBMSdeD\nhwSBqj4GkFnMh3YzG4oeXa0vMvdItq1JqNBZvr0pyuSTXOIY9o4CQqrCzrGqFmXW\n2G4po0SLDwKBgQCqSiLQ+S1BGM1uTGgs+qLp2WUyB37H8km7XK5By894FZzGupEA\nCjNvgRJVh2J1CE59wfEKOP2uvqsXtmd+MDML37zQb6PBsPsVcHvXK5mW9idkvZ1e\nxycSFyvdQyHLLCjEnGizzUqoKrIV6yz0etLeJjXWUylu67/EsyStc1RkJQKBgEtf\nTy2vz0dXONvjdTKnepytjx98Qce+UqFYjuMQdpA0GTxwG42CJKokeyVGWn92Ld+0\nJ4HYjI1WJmoMdmojtLhBBCUV+KWFw+Z2HJC7fm6KD/Qn1qEUVEhgpgtmOCgCbFXy\nZjUTrGLskR9X4zR+twM2/IXwhCg+iyEbSOqHkxM5AoGAXLxoyB5J0XjQN0VAdNGV\nsEhrbGfwElOqljQN0Z0krH5xTqLuyEjV9RYUSs0gClF+fcnfuar+QksH5a8je4m/\nianLAQ8RyiUwY2p/XBJm+2QZeuaIf3N392VjpbRiczegX0shHWtVUnRXoTGsTqke\n7TT0Urg12IlpZxxQLmmvgBg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mallsec-sellers-sa@mallsec.iam.gserviceaccount.com",
+  "client_id": "117705286496688986343",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mallsec-sellers-sa%40mallsec.iam.gserviceaccount.com"
+}
