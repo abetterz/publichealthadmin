@@ -138,8 +138,8 @@ router.post("/:model/create", [auth], async (req, res) => {
     // if have direct link, save it on src
     if (got_body.get_image == "external_link") {
       got_body.image = got_body.external_link;
-    } else if (got_body.get_image == "uploaded_image") {
-      got_body.image = got_body.uploaded_image;
+    } else if (got_body.get_image == "upload_image") {
+      got_body.image = got_body.upload_image;
     }
     // if have downloadble link, download the image and save to googble place, then get the link and save it to the dabase
 
@@ -213,7 +213,7 @@ router.post("/:model/create", [auth], async (req, res) => {
         directory,
         uploadSuccess,
       });
-      got_body.image = got_body.uploaded_image;
+      got_body.image = got_body.upload_image;
     } else {
       let output = await Model.findOne({ _id: created._id });
 
@@ -229,7 +229,7 @@ router.post("/:model/update", [auth], async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
-
+    console.log(BODY, "model_update");
     let got_body = BODY;
 
     let Model = getModel({ model });
@@ -247,13 +247,89 @@ router.post("/:model/update", [auth], async (req, res) => {
       };
     }
 
-    console.log(req.body, "testing_update");
+    let created = got_body;
+    let output = await Model.findOne({ _id: created._id });
 
-    await Model.updateOne({ _id: req.body._id }, { $set: got_body });
+    // if have direct link, save it on src
+    if (got_body.get_image == "external_link") {
+      got_body.image = got_body.external_link;
+      await Model.updateOne({ _id: req.body._id }, { $set: got_body });
+      let output = await Model.findOne({ _id: created._id });
+      // console.log(got_body, output, "upload_image");
+      res.status(201).json(output);
+    } else if (got_body.get_image == "upload_image") {
+      console.log(got_body, "upload_image");
 
-    let output = await Model.findOne({ _id: req.body._id });
+      await Model.updateOne({ _id: req.body._id }, { $set: got_body });
+      let output = await Model.findOne({ _id: created._id });
+      output.image = req.body.image;
+      await output.save();
+      // console.log(output.image, got_body.image, "upload_image");
+      res.status(201).json(output);
+    } else if (got_body.get_image != "none" && !got_body.image) {
+      let screenshot_title = sanitizer.sanitize(got_body.title);
+      let directory = `screenshots/${screenshot_title}.png`;
+      let uploadSuccess = async (err, file, apiResponse) => {
+        let found = await Model.findById(created._id);
+        if (found) {
+          found.image = apiResponse.mediaLink;
+          await found.save();
+        }
+        console.log(created, "upload_to_google_testing");
 
-    res.status(201).json(output);
+        // delete the temporary file after word
+        fs.unlink(path.join(directory), (err) => {
+          if (err) throw err;
+        });
+
+        let output = await Model.findOne({ _id: created._id });
+
+        res.status(201).json(output);
+      };
+      console.log(got_body, "none");
+
+      const TakeScreenshot = async (input) => {
+        let { link, width, height, directory, title, uploadSuccess } = input;
+
+        try {
+          const browser = await puppeteer.launch({
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            defaultViewport: { width: width || 1920, height: height || 1480 },
+          });
+          console.log(link, "got_body_link");
+
+          const page = await browser.newPage();
+          if (!link.includes("http") || !link.includes("https")) {
+            link = "http://" + link;
+          }
+          await page.goto(link);
+
+          await page.screenshot({ path: directory });
+
+          await browser.close();
+
+          let res = await uploadToGoogle({
+            changed_name: title,
+            filetype: "screenshot",
+            uploaded_file_path: directory,
+            uploadSuccess,
+          });
+        } catch (err) {}
+      };
+
+      let take_out_screen = await TakeScreenshot({
+        link: got_body.link,
+        title: screenshot_title,
+        directory,
+        uploadSuccess,
+      });
+      got_body.image = got_body.upload_image;
+    } else {
+      console.log(got_body, "last");
+
+      let output = await Model.findOne({ _id: created._id });
+      res.status(201).json(output);
+    }
   } catch (error) {
     console.log(error);
     res.status(error.status || 400).json({ message: error.message });

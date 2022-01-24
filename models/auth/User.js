@@ -17,6 +17,9 @@ const TheSchema = new Schema({
     require: true,
   },
 
+  image: String,
+  fullname: String,
+  title: String,
   prev_passwords: [
     {
       password: String,

@@ -21,7 +21,7 @@ const TheSchema = new Schema({
   get_image: String,
   external_link: String,
   downloadable_link: String,
-  image_url: String,
+  image: String,
   published_on: {
     type: Date,
     default: Date.now,
