@@ -22,6 +22,7 @@ const TheSchema = new Schema({
   external_link: String,
   downloadable_link: String,
   image: String,
+  fullname: String,
 
   // universal
   public: {
