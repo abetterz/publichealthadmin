@@ -18,7 +18,14 @@ const TheSchema = new Schema({
   categories: [String],
   screenshot: String,
   screenshot_error: String,
-
+  get_image: String,
+  external_link: String,
+  downloadable_link: String,
+  image_url: String,
+  published_on: {
+    type: Date,
+    default: Date.now,
+  },
   // universal
   public: {
     type: Boolean,
