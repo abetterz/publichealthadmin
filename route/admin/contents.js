@@ -5,6 +5,7 @@ const getModel = require("../../models/index");
 const { getPlaceApi } = require("../../public_api/place");
 const path = require("path");
 const sanitizer = require("string-sanitizer");
+const puppeteer = require("puppeteer");
 
 // Google Auth
 const router = express.Router();
@@ -30,7 +31,6 @@ router.post("/posts/data", [auth], async (req, res) => {
     // let created = await Model.insertMany(data);
     let output = "created";
 
-    const puppeteer = require("puppeteer");
     // let directory = __dirname + "\\screenshots\\screenshot.png";
 
     let allPosts = await Model.find({
@@ -123,11 +123,6 @@ router.post("/:model/create", [auth], async (req, res) => {
 
     let got_body = (await getBody(model, BODY)) || {};
 
-    let payload = {
-      ...got_body,
-      creator: req.user.id,
-    };
-
     let Model = getModel({ model });
 
     if (!Model) {
@@ -137,11 +132,93 @@ router.post("/:model/create", [auth], async (req, res) => {
       };
     }
 
-    let created = new Model(payload);
-    await created.save();
-    let output = created;
+    let screenshot_title = sanitizer.sanitize(got_body.title);
+    let directory = `screenshots/${screenshot_title}.png`;
 
-    res.status(201).json(output);
+    // if have direct link, save it on src
+    if (got_body.get_image == "external_link") {
+      got_body.image = got_body.external_link;
+    } else if (got_body.get_image == "uploaded_image") {
+      got_body.image = got_body.uploaded_image;
+    }
+    // if have downloadble link, download the image and save to googble place, then get the link and save it to the dabase
+
+    // if none, download the screenshot and save it to google place
+    let payload = {
+      ...got_body,
+      creator: req.user.id,
+    };
+    let created = new Model(payload);
+
+    await created.save();
+
+    if (
+      got_body.screenshot ||
+      (got_body.get_image != "none" && !got_body.image)
+    ) {
+      let uploadSuccess = async (err, file, apiResponse) => {
+        let found = await Model.findById(created._id);
+        if (found) {
+          found.image = apiResponse.mediaLink;
+          await found.save();
+        }
+        console.log(created, "upload_to_google_testing");
+
+        // delete the temporary file after word
+        fs.unlink(path.join(directory), (err) => {
+          if (err) throw err;
+        });
+
+        let output = await Model.findOne({ _id: created._id });
+
+        res.status(201).json(output);
+      };
+
+      const TakeScreenshot = async (input) => {
+        let { link, width, height, directory, title, uploadSuccess } = input;
+
+        try {
+          const browser = await puppeteer.launch({
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            defaultViewport: { width: width || 1920, height: height || 1480 },
+          });
+          console.log(link, "got_body_link");
+
+          const page = await browser.newPage();
+          if (!link.includes("http") || !link.includes("https")) {
+            link = "http://" + link;
+          }
+          await page.goto(link);
+
+          await page.screenshot({ path: directory });
+
+          await browser.close();
+
+          let res = await uploadToGoogle({
+            changed_name: title,
+            filetype: "screenshot",
+            uploaded_file_path: directory,
+            uploadSuccess,
+          });
+        } catch (err) {
+          let output = await Model.findOne({ _id: created._id });
+
+          res.status(201).json(output);
+        }
+      };
+
+      let take_out_screen = await TakeScreenshot({
+        link: got_body.link,
+        title: screenshot_title,
+        directory,
+        uploadSuccess,
+      });
+      got_body.image = got_body.uploaded_image;
+    } else {
+      let output = await Model.findOne({ _id: created._id });
+
+      res.status(201).json(output);
+    }
   } catch (error) {
     console.log(error);
     res.status(error.status || 400).json({ message: error.message });
@@ -186,6 +263,7 @@ router.post("/:model/archieved", [auth], async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
+    let got_body = BODY;
 
     let Model = getModel({ model });
 
@@ -206,7 +284,39 @@ router.post("/:model/archieved", [auth], async (req, res) => {
       { $set: { published: false } }
     );
 
-    let output = Model.findOne({ _id: got_body._id });
+    let output = await Model.findOne({ _id: got_body._id });
+    res.status(201).json(output);
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
+  }
+});
+router.post("/:model/drop", [auth], async (req, res) => {
+  try {
+    const BODY = req.body;
+    const { model } = req.params;
+    let got_body = BODY;
+
+    let Model = getModel({ model });
+
+    if (!Model) {
+      throw {
+        status: 400,
+        message: "Server Error",
+      };
+    }
+    if (!got_body._id) {
+      throw {
+        status: 400,
+        message: "Delete require and id",
+      };
+    }
+    let output = await Model.findOne({ _id: got_body._id });
+
+    if (output) {
+      await Model.deleteOne({ _id: output._id });
+    }
+
     res.status(201).json(output);
   } catch (error) {
     console.log(error);
@@ -217,7 +327,8 @@ router.get("/:model/read", async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
-    const { category, type } = req.query;
+    const { category, type, searched_title } = req.query;
+    let searched = { title: { $regex: searched_title, $options: "i" } };
 
     let Model = getModel({ model });
 
@@ -243,22 +354,38 @@ router.get("/:model/read", async (req, res) => {
     let output = [];
     if (got_category) {
       let query = {
+        published: true,
         categories: { $in: got_category },
         screenshot: { $exists: true },
       };
+
+      if (searched_title && searched_title.length > 0) {
+        query = {
+          $and: [query, searched],
+        };
+      }
 
       console.log(type);
       if (!type) {
         if (category == "front_page") {
           delete query.screenshot;
         }
-        output = await Model.find(query).limit(8).sort({ created_date: -1 });
+        output = await Model.find(query).limit(8).sort({ created_date: 1 });
       } else {
-        output = await Model.find(query).sort({ created_date: -1 });
+        output = await Model.find(query).sort({ created_date: 1 });
       }
     } else {
-      output = await Model.find({ screenshot: { $exists: true } }).sort({
-        created_date: -1,
+      let query = {
+        published: true,
+        screenshot: { $exists: true },
+      };
+      if (searched_title && searched_title.length > 0) {
+        query = {
+          $and: [query, searched],
+        };
+      }
+      output = await Model.find(query).sort({
+        created_date: 1,
       });
     }
 
@@ -303,9 +430,9 @@ router.get("/admin_list/:model/read", async (req, res) => {
 
       console.log(type);
       if (!type) {
-        output = await Model.find(query).limit(8).sort({ created_date: -1 });
+        output = await Model.find(query).limit(8).sort({ created_date: 1 });
       } else {
-        output = await Model.find(query).sort({ created_date: -1 });
+        output = await Model.find(query).sort({ created_date: 1 });
       }
     } else {
       output = await Model.find({}).sort({
