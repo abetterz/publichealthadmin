@@ -453,7 +453,7 @@ router.get("/:model/read", async (req, res) => {
     } else {
       let query = {
         published: true,
-        screenshot: { $exists: true },
+        // screenshot: { $exists: true },
       };
       if (searched_title && searched_title.length > 0) {
         query = {
