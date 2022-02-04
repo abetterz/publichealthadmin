@@ -157,7 +157,7 @@ router.post("/:model/create", [auth], async (req, res) => {
       (got_body.get_image != "none" && !got_body.image)
     ) {
       let uploadSuccess = async (err, file, apiResponse) => {
-        let found = await Model.findById(created._id);
+        let found = await Model.findById(created._id).limit(48);
         if (found) {
           found.image = apiResponse.mediaLink;
           await found.save();
@@ -169,7 +169,7 @@ router.post("/:model/create", [auth], async (req, res) => {
           if (err) throw err;
         });
 
-        let output = await Model.findOne({ _id: created._id });
+        let output = await Model.findOne({ _id: created._id }).limit(48);
 
         res.status(201).json(output);
       };
@@ -201,7 +201,7 @@ router.post("/:model/create", [auth], async (req, res) => {
             uploadSuccess,
           });
         } catch (err) {
-          let output = await Model.findOne({ _id: created._id });
+          let output = await Model.findOne({ _id: created._id }).limit(48);
 
           res.status(201).json(output);
         }
@@ -215,7 +215,7 @@ router.post("/:model/create", [auth], async (req, res) => {
       });
       got_body.image = got_body.upload_image;
     } else {
-      let output = await Model.findOne({ _id: created._id });
+      let output = await Model.findOne({ _id: created._id }).limit(48);
 
       res.status(201).json(output);
     }
@@ -254,7 +254,7 @@ router.post("/:model/update", [auth], async (req, res) => {
     if (got_body.get_image == "external_link") {
       got_body.image = got_body.external_link;
       await Model.updateOne({ _id: req.body._id }, { $set: got_body });
-      let output = await Model.findOne({ _id: created._id });
+      let output = await Model.findOne({ _id: created._id }).limit(48);
       // console.log(got_body, output, "upload_image");
       res.status(201).json(output);
     } else if (got_body.get_image == "upload_image") {
@@ -446,9 +446,12 @@ router.get("/:model/read", async (req, res) => {
         if (category == "front_page") {
           delete query.screenshot;
         }
-        output = await Model.find(query).limit(8).sort({ created_date: 1 });
+        output = await Model.find(query)
+          .limit(8)
+          .sort({ created_date: 1 })
+          .limit(48);
       } else {
-        output = await Model.find(query).sort({ created_date: 1 });
+        output = await Model.find(query).sort({ created_date: 1 }).limit(48);
       }
     } else {
       let query = {
@@ -460,9 +463,11 @@ router.get("/:model/read", async (req, res) => {
           $and: [query, searched],
         };
       }
-      output = await Model.find(query).sort({
-        created_date: 1,
-      });
+      output = await Model.find(query)
+        .sort({
+          created_date: 1,
+        })
+        .limit(48);
     }
 
     res.status(201).json(output);
@@ -506,14 +511,19 @@ router.get("/admin_list/:model/read", async (req, res) => {
 
       console.log(type);
       if (!type) {
-        output = await Model.find(query).limit(8).sort({ created_date: 1 });
+        output = await Model.find(query)
+          .limit(8)
+          .sort({ created_date: 1 })
+          .limit(48);
       } else {
-        output = await Model.find(query).sort({ created_date: 1 });
+        output = await Model.find(query).sort({ created_date: 1 }).limit(48);
       }
     } else {
-      output = await Model.find({}).sort({
-        created_date: -1,
-      });
+      output = await Model.find({})
+        .sort({
+          created_date: -1,
+        })
+        .limit(48);
     }
 
     res.status(201).json(output);

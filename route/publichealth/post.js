@@ -11,7 +11,7 @@ const router = express.Router();
 router.get("/home", [auth], async (req, res) => {
   try {
     const GotModel = getModel("post");
-    let output = GotModel.find();
+    let output = GotModel.find().limit(48);
     res.status(201).json(output);
   } catch (error) {
     res.status(error.status || 400).json({ message: error.message });
