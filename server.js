@@ -31,6 +31,9 @@ async function run(pid) {
   var allowlist = [
     "https://public-health-news.herokuapp.com/",
     "https://public-health-news.herokuapp.com",
+    "https://publichealth.news",
+    "https://publichealth-8le2b.ondigitalocean.app/",
+
     HTTP_WEB,
     HTTPS_WEB,
     HTTP_ADMIN,
