@@ -221,6 +221,20 @@ router.post("/:model/update", [auth], async (req, res) => {
     const { model } = req.params;
 
     let Model = getModel({ model });
+
+    if (!Model) {
+      throw {
+        status: 400,
+        message: "Server Error",
+      };
+    }
+    if (!BODY._id) {
+      throw {
+        status: 400,
+        message: "Update require an id",
+      };
+    }
+
     let original = await Model.findOne({ _id: BODY._id });
     let _doc = (original && original._doc) || {};
     let got_body = {
@@ -229,20 +243,6 @@ router.post("/:model/update", [auth], async (req, res) => {
     };
 
     console.log(_doc, "getting-old");
-
-    if (!Model) {
-      throw {
-        status: 400,
-        message: "Server Error",
-      };
-    }
-    if (!got_body._id) {
-      throw {
-        status: 400,
-        message: "Update require an id",
-      };
-    }
-
     let created = got_body;
 
     console.log(got_body.get_image, "get_image");
@@ -262,9 +262,10 @@ router.post("/:model/update", [auth], async (req, res) => {
       output.image = req.body.image;
       await output.save();
       res.status(201).json(output);
-    } else if (got_body.get_image != "none" && !got_body.image) {
-      console.log(got_body, "none");
-
+    } else if (
+      got_body.get_image == "screenshot" ||
+      (got_body.get_image != "none" && !got_body.image && !got_body.screenshot)
+    ) {
       let screenshot_title = sanitizer.sanitize(got_body.title);
       let directory = `screenshots/${screenshot_title}.png`;
       let uploadSuccess = async (err, file, apiResponse) => {
@@ -278,7 +279,7 @@ router.post("/:model/update", [auth], async (req, res) => {
         fs.unlink(path.join(directory), (err) => {
           if (err) throw err;
         });
-
+        await Model.updateOne({ _id: found._id }, { $set: got_body });
         let output = await Model.findOne({ _id: created._id });
 
         res.status(201).json(output);
