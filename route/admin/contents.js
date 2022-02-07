@@ -25,9 +25,6 @@ router.post("/posts/data", [auth], async (req, res) => {
       };
     }
 
-    await Model.remove({ _id: "61ed73c1f914041f00812e2d" });
-
-    console.log("posted data");
     // let created = await Model.insertMany(data);
     let output = "created";
 
@@ -46,7 +43,6 @@ router.post("/posts/data", [auth], async (req, res) => {
       // categories: { $in: ["exclusive", "updated_daily"] },
       categories: { $in: ["updated_daily"] },
     });
-    console.log(posts.length, "testing length");
     // allPosts = [allPosts[1], allPosts[1]];
     let length = allPosts.length;
     let percentage = 0;
@@ -55,7 +51,6 @@ router.post("/posts/data", [auth], async (req, res) => {
       let directory = `screenshots/${title}.png`;
 
       percentage = ((index + 1) / length) * 100;
-      console.log(percentage, "%");
       let uploadSuccess = async (err, file, apiResponse) => {
         // delete the temporary file after word
         fs.unlink(path.join(directory), (err) => {
@@ -101,9 +96,7 @@ router.post("/posts/data", [auth], async (req, res) => {
 
             found.screenshot_error = err.message;
             await found.save();
-            console.log(found.screenshot_error);
           }
-          console.log(err.message);
         }
       })();
     });
@@ -162,7 +155,6 @@ router.post("/:model/create", [auth], async (req, res) => {
           found.image = apiResponse.mediaLink;
           await found.save();
         }
-        console.log(created, "upload_to_google_testing");
 
         // delete the temporary file after word
         fs.unlink(path.join(directory), (err) => {
@@ -182,7 +174,6 @@ router.post("/:model/create", [auth], async (req, res) => {
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
             defaultViewport: { width: width || 1920, height: height || 1480 },
           });
-          console.log(link, "got_body_link");
 
           const page = await browser.newPage();
           if (!link.includes("http") || !link.includes("https")) {
@@ -220,7 +211,6 @@ router.post("/:model/create", [auth], async (req, res) => {
       res.status(201).json(output);
     }
   } catch (error) {
-    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 });
@@ -229,10 +219,16 @@ router.post("/:model/update", [auth], async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
-    console.log(BODY, "model_update");
-    let got_body = BODY;
 
     let Model = getModel({ model });
+    let original = await Model.findOne({ _id: BODY._id });
+    let _doc = (original && original._doc) || {};
+    let got_body = {
+      ..._doc,
+      ...BODY,
+    };
+
+    console.log(_doc, "getting-old");
 
     if (!Model) {
       throw {
@@ -248,25 +244,27 @@ router.post("/:model/update", [auth], async (req, res) => {
     }
 
     let created = got_body;
-    let output = await Model.findOne({ _id: created._id });
+
+    console.log(got_body.get_image, "get_image");
 
     // if have direct link, save it on src
     if (got_body.get_image == "external_link") {
+      console.log(got_body.get_image, "external_link");
       got_body.image = got_body.external_link;
       await Model.updateOne({ _id: req.body._id }, { $set: got_body });
       let output = await Model.findOne({ _id: created._id }).limit(48);
-      // console.log(got_body, output, "upload_image");
       res.status(201).json(output);
     } else if (got_body.get_image == "upload_image") {
-      console.log(got_body, "upload_image");
+      console.log(got_body.get_image, "upload_image");
 
       await Model.updateOne({ _id: req.body._id }, { $set: got_body });
       let output = await Model.findOne({ _id: created._id });
       output.image = req.body.image;
       await output.save();
-      // console.log(output.image, got_body.image, "upload_image");
       res.status(201).json(output);
     } else if (got_body.get_image != "none" && !got_body.image) {
+      console.log(got_body, "none");
+
       let screenshot_title = sanitizer.sanitize(got_body.title);
       let directory = `screenshots/${screenshot_title}.png`;
       let uploadSuccess = async (err, file, apiResponse) => {
@@ -275,7 +273,6 @@ router.post("/:model/update", [auth], async (req, res) => {
           found.image = apiResponse.mediaLink;
           await found.save();
         }
-        console.log(created, "upload_to_google_testing");
 
         // delete the temporary file after word
         fs.unlink(path.join(directory), (err) => {
@@ -286,7 +283,6 @@ router.post("/:model/update", [auth], async (req, res) => {
 
         res.status(201).json(output);
       };
-      console.log(got_body, "none");
 
       const TakeScreenshot = async (input) => {
         let { link, width, height, directory, title, uploadSuccess } = input;
@@ -296,7 +292,6 @@ router.post("/:model/update", [auth], async (req, res) => {
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
             defaultViewport: { width: width || 1920, height: height || 1480 },
           });
-          console.log(link, "got_body_link");
 
           const page = await browser.newPage();
           if (!link.includes("http") || !link.includes("https")) {
@@ -325,13 +320,16 @@ router.post("/:model/update", [auth], async (req, res) => {
       });
       got_body.image = got_body.upload_image;
     } else {
-      console.log(got_body, "last");
+      console.log(got_body.get_image, "else");
 
+      await Model.updateOne({ _id: req.body._id }, { $set: got_body });
       let output = await Model.findOne({ _id: created._id });
+      console.log(output, "testing_output");
+
       res.status(201).json(output);
     }
   } catch (error) {
-    console.log(error);
+    console.log(error, "update errors");
     res.status(error.status || 400).json({ message: error.message });
   }
 });
@@ -363,7 +361,6 @@ router.post("/:model/archieved", [auth], async (req, res) => {
     let output = await Model.findOne({ _id: got_body._id });
     res.status(201).json(output);
   } catch (error) {
-    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 });
@@ -395,7 +392,6 @@ router.post("/:model/drop", [auth], async (req, res) => {
 
     res.status(201).json(output);
   } catch (error) {
-    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 });
@@ -425,8 +421,6 @@ router.get("/:model/read", async (req, res) => {
 
     let got_category = dict[category];
 
-    console.log(category);
-
     let output = [];
     if (got_category) {
       let query = {
@@ -441,7 +435,6 @@ router.get("/:model/read", async (req, res) => {
         };
       }
 
-      console.log(type);
       if (!type) {
         if (category == "front_page") {
           delete query.screenshot;
@@ -472,7 +465,6 @@ router.get("/:model/read", async (req, res) => {
 
     res.status(201).json(output);
   } catch (error) {
-    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 });
@@ -501,15 +493,12 @@ router.get("/admin_list/:model/read", async (req, res) => {
 
     let got_category = dict[category];
 
-    console.log(category);
-
     let output = [];
     if (got_category) {
       let query = {
         categories: { $in: got_category },
       };
 
-      console.log(type);
       if (!type) {
         output = await Model.find(query)
           .limit(8)
@@ -528,7 +517,6 @@ router.get("/admin_list/:model/read", async (req, res) => {
 
     res.status(201).json(output);
   } catch (error) {
-    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 });
