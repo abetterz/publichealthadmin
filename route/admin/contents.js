@@ -145,66 +145,55 @@ router.post("/:model/create", [auth], async (req, res) => {
 
     await created.save();
 
-    if (
-      got_body.screenshot ||
-      (got_body.get_image != "none" && !got_body.image)
-    ) {
-      let uploadSuccess = async (err, file, apiResponse) => {
-        let found = await Model.findById(created._id).limit(48);
-        if (found) {
-          found.image = apiResponse.mediaLink;
-          await found.save();
-        }
-
-        // delete the temporary file after word
-        fs.unlink(path.join(directory), (err) => {
-          if (err) throw err;
-        });
-
-        let output = await Model.findOne({ _id: created._id }).limit(48);
-
-        res.status(201).json(output);
-      };
-
-      const TakeScreenshot = async (input) => {
-        let { link, width, height, directory, title, uploadSuccess } = input;
-
-        try {
-          const browser = await puppeteer.launch({
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-            defaultViewport: { width: width || 1920, height: height || 1480 },
-          });
-
-          const page = await browser.newPage();
-          if (!link.includes("http") || !link.includes("https")) {
-            link = "http://" + link;
-          }
-          await page.goto(link);
-
-          await page.screenshot({ path: directory });
-
-          await browser.close();
-
-          let res = await uploadToGoogle({
-            changed_name: title,
-            filetype: "screenshot",
-            uploaded_file_path: directory,
-            uploadSuccess,
-          });
-        } catch (err) {
-          let output = await Model.findOne({ _id: created._id }).limit(48);
-
-          res.status(201).json(output);
-        }
-      };
-
-      let take_out_screen = await TakeScreenshot({
-        link: got_body.link,
-        title: screenshot_title,
-        directory,
-        uploadSuccess,
-      });
-      got_body.image = got_body.upload_image;
+    if (false) {
+      //   got_body.screenshot ||
+      //   (got_body.get_image != "none" && !got_body.image)
+      // ) {
+      //   let uploadSuccess = async (err, file, apiResponse) => {
+      //     let found = await Model.findById(created._id).limit(48);
+      //     if (found) {
+      //       found.image = apiResponse.mediaLink;
+      //       await found.save();
+      //     }
+      //     // delete the temporary file after word
+      //     fs.unlink(path.join(directory), (err) => {
+      //       if (err) throw err;
+      //     });
+      //     let output = await Model.findOne({ _id: created._id }).limit(48);
+      //     res.status(201).json(output);
+      //   };
+      //   const TakeScreenshot = async (input) => {
+      //     let { link, width, height, directory, title, uploadSuccess } = input;
+      //     try {
+      //       const browser = await puppeteer.launch({
+      //         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      //         defaultViewport: { width: width || 1920, height: height || 1480 },
+      //       });
+      //       const page = await browser.newPage();
+      //       if (!link.includes("http") || !link.includes("https")) {
+      //         link = "http://" + link;
+      //       }
+      //       await page.goto(link);
+      //       await page.screenshot({ path: directory });
+      //       await browser.close();
+      //       let res = await uploadToGoogle({
+      //         changed_name: title,
+      //         filetype: "screenshot",
+      //         uploaded_file_path: directory,
+      //         uploadSuccess,
+      //       });
+      //     } catch (err) {
+      //       let output = await Model.findOne({ _id: created._id }).limit(48);
+      //       res.status(201).json(output);
+      //     }
+      //   };
+      // let take_out_screen = await TakeScreenshot({
+      //   link: got_body.link,
+      //   title: screenshot_title,
+      //   directory,
+      //   uploadSuccess,
+      // });
+      // got_body.image = got_body.upload_image;
     } else {
       let output = await Model.findOne({ _id: created._id }).limit(48);
 
@@ -400,10 +389,17 @@ router.get("/:model/read", async (req, res) => {
   try {
     const BODY = req.body;
     const { model } = req.params;
-    const { category, type, searched_title } = req.query;
+    let { category, type, searched_title, limit = 5 } = req.query;
     let searched = { title: { $regex: searched_title, $options: "i" } };
 
     let Model = getModel({ model });
+    console.log(limit, "getting_body");
+
+    if (!limit) {
+      limit = 48;
+    }
+
+    limit = Number(limit);
 
     if (!Model) {
       throw {
@@ -413,7 +409,8 @@ router.get("/:model/read", async (req, res) => {
     }
 
     let dict = {
-      exclusive: ["exclusive", "top_stories"],
+      top_stories: ["top_stories"],
+      exclusive: ["exclusive"],
       must_read: ["must_read"],
       updated_daily: ["updated_daily"],
       featured_story: ["featured_story"],
@@ -440,12 +437,9 @@ router.get("/:model/read", async (req, res) => {
         if (category == "front_page") {
           delete query.screenshot;
         }
-        output = await Model.find(query)
-          .limit(8)
-          .sort({ created_date: 1 })
-          .limit(48);
+        output = await Model.find(query).limit(limit).sort({ created_at: -1 });
       } else {
-        output = await Model.find(query).sort({ created_date: 1 }).limit(48);
+        output = await Model.find(query).sort({ created_at: -1 }).limit(limit);
       }
     } else {
       let query = {
@@ -458,10 +452,11 @@ router.get("/:model/read", async (req, res) => {
         };
       }
       output = await Model.find(query)
+        .limit(limit)
+
         .sort({
-          created_date: 1,
-        })
-        .limit(48);
+          created_at: -1,
+        });
     }
 
     res.status(201).json(output);
@@ -503,15 +498,15 @@ router.get("/admin_list/:model/read", async (req, res) => {
       if (!type) {
         output = await Model.find(query)
           .limit(8)
-          .sort({ created_date: 1 })
+          .sort({ created_at: -1 })
           .limit(48);
       } else {
-        output = await Model.find(query).sort({ created_date: 1 }).limit(48);
+        output = await Model.find(query).sort({ created_at: -1 }).limit(48);
       }
     } else {
       output = await Model.find({})
         .sort({
-          created_date: -1,
+          created_at: -1,
         })
         .limit(48);
     }
