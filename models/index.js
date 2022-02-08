@@ -10,8 +10,10 @@ const user = require("./auth/User");
 const posts = require("./contents/Post");
 const scientists = require("./contents/Scientist");
 const websites = require("./contents/Website");
+const members = require("./contents/Member");
 
 const dict = {
+  members,
   // logs
   action,
   error_log,

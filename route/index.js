@@ -19,7 +19,12 @@ const dict = {
       file: "contents",
       api: "admin",
     },
+    {
+      file: "members",
+      api: "members",
+    },
   ],
+
   business: [
     // /api/business/
     {
