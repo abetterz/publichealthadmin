@@ -410,6 +410,7 @@ router.get("/:model/read", async (req, res) => {
 
     let dict = {
       featured_story: ["featured_story"],
+      top_stories: ["top_stories"],
       exclusive: ["exclusive"],
       must_read: ["must_read"],
       updated_daily: ["updated_daily"],
