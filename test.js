@@ -2181,9 +2181,9 @@ let data = [
   },
   {
     title:
-      "EXCLUSIVE: Professor’s Policy Offering Students ‘Extra Credit’ for Getting Vaccinated Quickly Pulled by University After Being Contacted",
+      "exclusive_stories: Professor’s Policy Offering Students ‘Extra Credit’ for Getting Vaccinated Quickly Pulled by University After Being Contacted",
     categories: ["must_read"],
-    link: "https://www.theepochtimes.com/exclusive-professors-policy-offering-students-extra-credit-for-getting-vaccinated-immediately-pulled-by-university-after-being-contacted_4210836.html?utm_content=News_EXCLUSIVE:_Professors_Policy?utm_medium=email_BN&amp;utm_source=newsnoe&amp;utm_campaign=EET_BreakingNews_01-13-2022-noe-Canada-free-sub-3&amp;est=elias98_99%40yahoo.com",
+    link: "https://www.theepochtimes.com/exclusive-professors-policy-offering-students-extra-credit-for-getting-vaccinated-immediately-pulled-by-university-after-being-contacted_4210836.html?utm_content=News_exclusive_stories:_Professors_Policy?utm_medium=email_BN&amp;utm_source=newsnoe&amp;utm_campaign=EET_BreakingNews_01-13-2022-noe-Canada-free-sub-3&amp;est=elias98_99%40yahoo.com",
     entry_id: 914,
     date_published: "1/14/2022 0:48",
   },
@@ -2444,7 +2444,7 @@ let data = [
   },
   {
     title:
-      "EXCLUSIVE: Nationwide Surge In Deaths Among People Aged 18-49: A State by State Overview",
+      "exclusive_stories: Nationwide Surge In Deaths Among People Aged 18-49: A State by State Overview",
     categories: ["must_read"],
     link: "https://www.theepochtimes.com/mkt_app/northeast-fares-best-amid-2021-prime-age-mortality-spike_4208797.html?utm_source=appan2028330?v=ul",
     entry_id: 860,
@@ -7687,7 +7687,7 @@ let data = [
   },
   {
     title:
-      "EXCLUSIVE: Poll reveals scary number of Dems support EXTREME authoritarian policies",
+      "exclusive_stories: Poll reveals scary number of Dems support EXTREME authoritarian policies",
     categories: ["updated_daily"],
     link: "https://www.theblaze.com/shows/the-glenn-beck-program/justin-haskins-the-great-reset?utm_source=theblaze-7DayTrendingTest&amp;utm_medium=email&amp;utm_campaign=The%20Blaze%20PM%20Trending%202022-01-11&amp;utm_term=ACTIVE%20LIST%20-%207%20Day%20Engagement",
     entry_id: 777,
@@ -7849,7 +7849,7 @@ let data = [
   },
   {
     title:
-      "“The Drug Does Not Appear to Qualify for Release” – EXCLUSIVE: Post Office Holds Woman’s Foreign Shipment of Ivermectin at the Request of the FDA",
+      "“The Drug Does Not Appear to Qualify for Release” – exclusive_stories: Post Office Holds Woman’s Foreign Shipment of Ivermectin at the Request of the FDA",
     categories: ["updated_daily"],
     link: "https://www.thegatewaypundit.com/2022/01/drug-not-appear-qualify-release-exclusive-post-office-holds-womans-foreign-shipment-ivermectin-request-fda/",
     entry_id: 697,

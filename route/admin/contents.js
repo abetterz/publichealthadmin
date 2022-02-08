@@ -393,7 +393,7 @@ router.get("/:model/read", async (req, res) => {
     let searched = { title: { $regex: searched_title, $options: "i" } };
 
     let Model = getModel({ model });
-    console.log(limit, "getting_body");
+    console.log(category, "getting_body");
 
     if (!limit) {
       limit = 48;
@@ -409,22 +409,23 @@ router.get("/:model/read", async (req, res) => {
     }
 
     let dict = {
-      top_stories: ["top_stories"],
+      featured_story: ["featured_story"],
       exclusive: ["exclusive"],
       must_read: ["must_read"],
       updated_daily: ["updated_daily"],
-      featured_story: ["featured_story"],
-      front_page: ["front_page"],
+      breaking_news: ["breaking_news"],
+      news: ["news"],
     };
 
     let got_category = dict[category];
 
     let output = [];
     if (got_category) {
+      console.log(got_category, "testing_got");
       let query = {
         published: true,
         categories: { $in: got_category },
-        screenshot: { $exists: true },
+        // screenshot: { $exists: true },
       };
 
       if (searched_title && searched_title.length > 0) {
@@ -439,7 +440,7 @@ router.get("/:model/read", async (req, res) => {
         }
         output = await Model.find(query).limit(limit).sort({ created_at: -1 });
       } else {
-        output = await Model.find(query).sort({ created_at: -1 }).limit(limit);
+        output = await Model.find(query).limit(limit).sort({ created_at: -1 });
       }
     } else {
       let query = {
@@ -451,14 +452,13 @@ router.get("/:model/read", async (req, res) => {
           $and: [query, searched],
         };
       }
-      output = await Model.find(query)
-        .limit(limit)
-
-        .sort({
-          created_at: -1,
-        });
+      output = await Model.find(query).limit(limit).sort({
+        created_at: -1,
+      });
     }
 
+    let length = output.length;
+    console.log(length, got_category);
     res.status(201).json(output);
   } catch (error) {
     res.status(error.status || 400).json({ message: error.message });
@@ -480,7 +480,7 @@ router.get("/admin_list/:model/read", async (req, res) => {
     }
 
     let dict = {
-      exclusive: ["exclusive", "top_stories"],
+      exclusive_stories: ["exclusive", "top_stories"],
       must_read: ["must_read"],
       updated_daily: ["updated_daily"],
       featured_story: ["featured_story"],
