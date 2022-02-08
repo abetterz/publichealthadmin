@@ -145,55 +145,55 @@ router.post("/:model/create", [auth], async (req, res) => {
 
     await created.save();
 
-    if (
-      got_body.get_image == "screenshot" ||
-      (got_body.get_image != "none" && !got_body.image)
-    ) {
-      let uploadSuccess = async (err, file, apiResponse) => {
-        let found = await Model.findById(created._id).limit(48);
-        if (found) {
-          found.image = apiResponse.mediaLink;
-          await found.save();
-        }
-        // delete the temporary file after word
-        fs.unlink(path.join(directory), (err) => {
-          if (err) throw err;
-        });
-        let output = await Model.findOne({ _id: created._id }).limit(48);
-        res.status(201).json(output);
-      };
-      const TakeScreenshot = async (input) => {
-        let { link, width, height, directory, title, uploadSuccess } = input;
-        try {
-          const browser = await puppeteer.launch({
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-            defaultViewport: { width: width || 1920, height: height || 1480 },
-          });
-          const page = await browser.newPage();
-          if (!link.includes("http") || !link.includes("https")) {
-            link = "http://" + link;
-          }
-          await page.goto(link);
-          await page.screenshot({ path: directory });
-          await browser.close();
-          let res = await uploadToGoogle({
-            changed_name: title,
-            filetype: "screenshot",
-            uploaded_file_path: directory,
-            uploadSuccess,
-          });
-        } catch (err) {
-          let output = await Model.findOne({ _id: created._id }).limit(48);
-          res.status(201).json(output);
-        }
-      };
-      let take_out_screen = await TakeScreenshot({
-        link: got_body.link,
-        title: screenshot_title,
-        directory,
-        uploadSuccess,
-      });
-      got_body.image = got_body.upload_image;
+    if (false) {
+      //   got_body.screenshot ||
+      //   (got_body.get_image != "none" && !got_body.image)
+      // ) {
+      //   let uploadSuccess = async (err, file, apiResponse) => {
+      //     let found = await Model.findById(created._id).limit(48);
+      //     if (found) {
+      //       found.image = apiResponse.mediaLink;
+      //       await found.save();
+      //     }
+      //     // delete the temporary file after word
+      //     fs.unlink(path.join(directory), (err) => {
+      //       if (err) throw err;
+      //     });
+      //     let output = await Model.findOne({ _id: created._id }).limit(48);
+      //     res.status(201).json(output);
+      //   };
+      //   const TakeScreenshot = async (input) => {
+      //     let { link, width, height, directory, title, uploadSuccess } = input;
+      //     try {
+      //       const browser = await puppeteer.launch({
+      //         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      //         defaultViewport: { width: width || 1920, height: height || 1480 },
+      //       });
+      //       const page = await browser.newPage();
+      //       if (!link.includes("http") || !link.includes("https")) {
+      //         link = "http://" + link;
+      //       }
+      //       await page.goto(link);
+      //       await page.screenshot({ path: directory });
+      //       await browser.close();
+      //       let res = await uploadToGoogle({
+      //         changed_name: title,
+      //         filetype: "screenshot",
+      //         uploaded_file_path: directory,
+      //         uploadSuccess,
+      //       });
+      //     } catch (err) {
+      //       let output = await Model.findOne({ _id: created._id }).limit(48);
+      //       res.status(201).json(output);
+      //     }
+      //   };
+      // let take_out_screen = await TakeScreenshot({
+      //   link: got_body.link,
+      //   title: screenshot_title,
+      //   directory,
+      //   uploadSuccess,
+      // });
+      // got_body.image = got_body.upload_image;
     } else {
       let output = await Model.findOne({ _id: created._id }).limit(48);
 
@@ -253,24 +253,21 @@ router.post("/:model/update", [auth], async (req, res) => {
       res.status(201).json(output);
     } else if (
       got_body.get_image == "screenshot" ||
-      got_body.get_image != "none"
+      (got_body.get_image != "none" && !got_body.image && !got_body.screenshot)
     ) {
-      console.log("should be getting screenshots");
       let screenshot_title = sanitizer.sanitize(got_body.title);
       let directory = `screenshots/${screenshot_title}.png`;
       let uploadSuccess = async (err, file, apiResponse) => {
         let found = await Model.findById(created._id);
-
         if (found) {
           found.image = apiResponse.mediaLink;
           await found.save();
         }
-        console.log(found, "should be getting screenshots");
+
         // delete the temporary file after word
         fs.unlink(path.join(directory), (err) => {
           if (err) throw err;
         });
-        delete got_body.image;
         await Model.updateOne({ _id: found._id }, { $set: got_body });
         let output = await Model.findOne({ _id: created._id });
 
