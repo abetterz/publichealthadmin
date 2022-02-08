@@ -37,7 +37,6 @@ router.post("/posts/data", [auth], async (req, res) => {
       fs.unlink(path.join(directory), (err) => {
         if (err) throw err;
       });
-      console.log(err, file, apiResponse, "testin merchant file upload");
     };
 
     (async () => {

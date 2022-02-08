@@ -132,7 +132,7 @@ router.post("/:model/create", [auth], async (req, res) => {
     if (got_body.get_image == "external_link") {
       got_body.image = got_body.external_link;
     } else if (got_body.get_image == "upload_image") {
-      got_body.image = got_body.upload_image;
+      got_body.image = got_body.image;
     }
     // if have downloadble link, download the image and save to googble place, then get the link and save it to the dabase
 
@@ -145,9 +145,10 @@ router.post("/:model/create", [auth], async (req, res) => {
 
     await created.save();
 
+    console.log(got_body.get_image, created.image, got_body);
     if (
       got_body.get_image == "screenshot" ||
-      (got_body.get_image != "none" && !got_body.image)
+      (got_body.get_image != "none" && !created.image)
     ) {
       let uploadSuccess = async (err, file, apiResponse) => {
         let found = await Model.findById(created._id).limit(48);

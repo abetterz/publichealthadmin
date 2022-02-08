@@ -52,7 +52,6 @@ router.post("/:type", async (req, res) => {
       fs.unlink(path.join(uploaded_file_path), (err) => {
         if (err) throw err;
       });
-      console.log(err, file, "testin merchant file upload");
 
       res.json({
         ...apiResponse,
