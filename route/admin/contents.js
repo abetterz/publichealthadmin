@@ -522,4 +522,47 @@ router.get("/admin_list/:model/read", async (req, res) => {
   }
 });
 
+router.get("/one/:model/read", async (req, res) => {
+  try {
+    const { model } = req.params;
+    const { category, type } = req.query;
+
+    let Model = getModel({ model });
+
+    if (!Model) {
+      throw {
+        status: 400,
+        message: "Server Error",
+      };
+    }
+
+    let dict = {
+      exclusive_stories: ["exclusive", "top_stories"],
+      must_read: ["must_read"],
+      updated_daily: ["updated_daily"],
+      featured_story: ["featured_story"],
+      front_page: ["front_page"],
+    };
+
+    let got_category = dict[category];
+
+    let output = [];
+    if (got_category) {
+      let query = {
+        categories: { $in: got_category },
+      };
+
+      if (!type) {
+        output = await Model.find(query).sort({ created_at: -1 }).limit(1);
+      } else {
+        output = await Model.find(query).sort({ created_at: -1 }).limit(1);
+      }
+    }
+
+    res.status(201).json(output);
+  } catch (error) {
+    res.status(error.status || 400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
