@@ -37,6 +37,10 @@ async function run(pid) {
     "https://publichealth.news",
     "http://publichealth.news",
     "http://localhost:3000",
+    "https://sagebrushrebellion.com",
+    "http://sagebrushrebellion.com",
+    "https://www.sagebrushrebellion.com",
+    "http://www.sagebrushrebellion.com",
 
     HTTP_WEB,
     HTTPS_WEB,
