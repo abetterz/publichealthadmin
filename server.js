@@ -36,6 +36,7 @@ async function run(pid) {
     "http://www.publichealth.news",
     "https://publichealth.news",
     "http://publichealth.news",
+    "http://localhost:3000"
 
     HTTP_WEB,
     HTTPS_WEB,
