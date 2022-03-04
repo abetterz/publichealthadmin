@@ -37,6 +37,7 @@ async function run(pid) {
     "https://publichealth.news",
     "http://publichealth.news",
     "http://localhost:3000",
+    "http://localhost:3010",
     "https://sagebrushrebellion.com",
     "http://sagebrushrebellion.com",
     "https://www.sagebrushrebellion.com",
