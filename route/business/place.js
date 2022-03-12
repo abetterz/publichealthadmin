@@ -209,7 +209,6 @@ router.post("/place/my_business", [auth], async (req, res) => {
     }
     let got_body = (await getBody(api_key, BODY)) || {};
     let place = got_body.my_business && got_body.my_business[0];
-    console.log(got_body, "testing_place");
 
     if (place) {
       // check if the user already managed a place

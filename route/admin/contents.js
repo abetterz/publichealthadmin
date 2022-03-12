@@ -400,7 +400,7 @@ router.get("/:model/read", async (req, res) => {
     console.log(category, "getting_body");
 
     if (!limit) {
-      limit = 48;
+      limit = 8000;
     }
 
     limit = Number(limit);
@@ -420,13 +420,21 @@ router.get("/:model/read", async (req, res) => {
       updated_daily: ["updated_daily"],
       breaking_news: ["breaking_news"],
       news: ["news"],
+      default: [
+        "news",
+        "featured_story",
+        "top_stories",
+        "exclusive",
+        "must_read",
+        "updated_daily",
+        "breaking_news",
+      ],
     };
 
-    let got_category = dict[category];
+    let got_category = dict[category] || dict.default;
 
     let output = [];
     if (got_category) {
-      console.log(got_category, "testing_got");
       let query = {
         published: true,
         categories: { $in: got_category },

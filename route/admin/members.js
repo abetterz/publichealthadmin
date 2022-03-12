@@ -68,6 +68,8 @@ router.post("/subscribe_sagebrush", async (req, res) => {
       };
     }
 
+    console.log(req.body, "testing_body");
+
     let newSub = new Model(req.body);
     await newSub.save();
     console.log(newSub);
