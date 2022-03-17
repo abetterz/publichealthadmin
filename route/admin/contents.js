@@ -431,7 +431,7 @@ router.get("/:model/read", async (req, res) => {
       ],
     };
 
-    let got_category = dict[category] || dict.default;
+    let got_category = dict[category];
 
     let output = [];
     if (got_category) {
