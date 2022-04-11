@@ -1,5 +1,7 @@
 // analytics
 const action = require("./analytics/Action");
+const analytics = require("./analytics/Analytics");
+
 const error_log = require("./analytics/ErrorLog");
 
 // auth
@@ -20,6 +22,7 @@ const dict = {
   members,
   // logs
   action,
+  analytics,
   error_log,
   // auth
   profile,

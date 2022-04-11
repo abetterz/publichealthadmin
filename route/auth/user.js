@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const { getBody, createToken } = require("../../utils/api");
 const User = require("../../models/auth/User");
+const Analytics = require("../../models/analytics/Analytics");
+
 const Profile = require("../../models/auth/Profile");
 const Action = require("../../models/analytics/Action");
 const ErrorLog = require("../../models/analytics/ErrorLog");
@@ -24,6 +26,26 @@ router.get(`/load_user/`, [auth], async (req, res) => {
     let error_list = [];
 
     if (user && user.verified) {
+      let exist = await Analytics.exists({email: user.email});
+      console.log(exist);
+
+      if(exist == false){
+        var analytics = new Analytics({user:user,email:user.email});
+        await analytics.save(); 
+        console.log(analytics);
+      }else{
+        await Analytics.findOneAndUpdate({email :user.email}, {$inc : {'logincount' : 1},lastLogin: Date.now()}).exec((err, result) => {
+          if(err){
+              return console.log(err);
+          }else{
+              console.log("Working");
+              console.log(result);
+          }
+      })
+      }
+    }
+
+    if (user && user.verified) {
       let found_profile = await Profile.findOne({
         user: user.id,
         current: true,
@@ -32,11 +54,10 @@ router.get(`/load_user/`, [auth], async (req, res) => {
       await user.save();
 
       // get current place
-
       const payload = {
         user: {
           id: user.id,
-        },
+        }
       };
       let output = { ...payload };
       res.json(output);

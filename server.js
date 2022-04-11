@@ -37,6 +37,7 @@ async function run(pid) {
     "https://publichealth.news",
     "http://publichealth.news",
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost:3010",
     "https://sagebrushrebellion.com",
     "http://sagebrushrebellion.com",
@@ -65,7 +66,7 @@ async function run(pid) {
 
   app.use(cors(corsOptionsDelegate));
 
-  // app.use(cors());
+   //app.use(cors());
   app.use(
     fileUpload({
       useTempFiles: true,
