@@ -115,6 +115,7 @@ router.post("/:model/create", [auth], async (req, res) => {
     const { model } = req.params;
 
     let got_body = (await getBody(model, BODY)) || {};
+    console.log("Body: ",got_body)
 
     let Model = getModel({ model });
 
@@ -153,6 +154,7 @@ router.post("/:model/create", [auth], async (req, res) => {
       let uploadSuccess = async (err, file, apiResponse) => {
         let found = await Model.findById(created._id).limit(48);
         if (found) {
+          console.log(apiResponse);
           found.image = apiResponse.mediaLink;
           await found.save();
         }
