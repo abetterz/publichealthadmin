@@ -200,8 +200,6 @@ router.post("/:model/create", [auth], async (req, res) => {
         uploadSuccess,
       });
       got_body.image = got_body.upload_image;
-    } else if (got_body.get_image != "video"){
-
     }else{
       let output = await Model.findOne({ _id: created._id }).limit(48);
       console.log("Executed");
@@ -261,7 +259,7 @@ router.post("/:model/update", [auth], async (req, res) => {
       res.status(201).json(output);
     } else if (
       got_body.get_image == "screenshot" ||
-      got_body.get_image != "none"
+      got_body.get_image != "none" && got_body.get_image != "video"
     ) {
       console.log("should be getting screenshots");
       let screenshot_title = sanitizer.sanitize(got_body.title);
