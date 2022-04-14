@@ -66,7 +66,7 @@ router.post("/:type", async (req, res) => {
     let bucket = "publichealthnews2";
 
     let options = {
-      resumable: true,
+      resumable: false,
       metadata: {
         metadata: {},
       },
