@@ -10,6 +10,7 @@ const TheSchema = new Schema({
   // ownership
   title: String,
   link: String,
+  video: String,
   hide_image: Boolean,
   image: String,
   author: String,

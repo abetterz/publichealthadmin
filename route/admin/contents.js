@@ -134,6 +134,8 @@ router.post("/:model/create", [auth], async (req, res) => {
       got_body.image = got_body.external_link;
     } else if (got_body.get_image == "upload_image") {
       got_body.image = got_body.image;
+    } else if (got_body.get_image == "upload_image") {
+      got_body.video = got_body.video;
     }
     // if have downloadble link, download the image and save to googble place, then get the link and save it to the dabase
 
@@ -149,9 +151,10 @@ router.post("/:model/create", [auth], async (req, res) => {
     console.log(got_body.get_image, created.image, got_body);
     if (
       got_body.get_image == "screenshot" ||
-      (got_body.get_image != "none" && !created.image)
+      (got_body.get_image != "none" && !created.image && got_body.get_image != "video")
     ) {
       let uploadSuccess = async (err, file, apiResponse) => {
+        console.log("Upload Success");
         let found = await Model.findById(created._id).limit(48);
         if (found) {
           console.log(apiResponse);
@@ -197,9 +200,11 @@ router.post("/:model/create", [auth], async (req, res) => {
         uploadSuccess,
       });
       got_body.image = got_body.upload_image;
-    } else {
-      let output = await Model.findOne({ _id: created._id }).limit(48);
+    } else if (got_body.get_image != "video"){
 
+    }else{
+      let output = await Model.findOne({ _id: created._id }).limit(48);
+      console.log("Executed");
       res.status(201).json(output);
     }
   } catch (error) {
