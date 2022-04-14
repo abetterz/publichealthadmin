@@ -49,6 +49,7 @@ router.post("/:type", async (req, res) => {
 
     let uploadSuccess = (err,file,apiResponse) => {
       // delete the temporary file after word
+      console.log(err);
       fs.unlink(path.join(uploaded_file_path), (err) => {
         if (err) throw err;
       });
