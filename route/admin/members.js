@@ -101,4 +101,25 @@ router.get("/subscribe_sagebrush", async (req, res) => {
     res.status(error.status || 400).json({ message: error.message });
   }
 });
+
+router.get("/allmembers", async (req, res) => {
+  try {
+    let Model = getModel({ model: "members" });
+
+    if (!Model) {
+      throw {
+        status: 400,
+        message: "Server Error",
+      };
+    }
+
+    let output = await Model.find();
+
+    console.log(output.length);
+
+    res.status(201).json({ msg: "Success", data: output });
+  } catch (error) {
+    res.status(error.status || 400).json({ message: error.message });
+  }
+});
 module.exports = router;
