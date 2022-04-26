@@ -6,6 +6,7 @@ const { getPlaceApi } = require("../../public_api/place");
 const path = require("path");
 const sanitizer = require("string-sanitizer");
 const puppeteer = require("puppeteer");
+const { Parser } = require('json2csv');
 
 // Google Auth
 const router = express.Router();
@@ -113,11 +114,60 @@ router.get("/allmembers", async (req, res) => {
       };
     }
 
-    let output = await Model.find();
+    let output = await Model.find({},'-_id fullname email');
 
-    console.log(output.length);
+    const fields = [{
+      label: 'Name',
+      value: 'fullname'
+    },{
+      label: 'Email',
+      value: 'email'
+    }];
+  try {
+  const parser = new Parser({fields});
+  const csv = parser.parse(output);
+  const fs = require('fs');
+  fs.writeFileSync('members.csv', csv)
+try {
+  var nodemailer = require('nodemailer');
 
-    res.status(201).json({ msg: "Success", data: output });
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'zaxissender@gmail.com',
+    pass: 'solutions34'
+  }
+});
+
+var mailOptions = {
+  from: 'zaxissender@gmail.com',
+  to: 'marketing@zaxissolutions.com',
+  subject: 'Email List',
+  text: 'Email list is attached below',
+  attachments: [{
+    filename: "members.csv",
+    path: 'members.csv'
+}]
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+  
+  // file written successfully
+} catch (err) {
+  console.error(err);
+}
+  console.log(csv);
+  } catch (err) {
+  console.error(err);
+  }
+  console.log(output.length);
+    res.status(201).json({ msg: "Success"});
   } catch (error) {
     res.status(error.status || 400).json({ message: error.message });
   }
